@@ -12,7 +12,7 @@ const createItem = (req, res) => {
     const schema = Joi.object({
         name: Joi.string().required(),
         description: Joi.string().required(),
-        starting_bid: Joi.number().positive.required(),
+        starting_bid: Joi.number().required(),
         end_date: Joi.number().min(2026).required()
     });
 

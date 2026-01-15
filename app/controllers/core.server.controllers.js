@@ -13,7 +13,7 @@ const createItem = (req, res) => {
         name: Joi.string().required(),
         description: Joi.string().required(),
         starting_bid: Joi.number().positive.required(),
-        end_date: Joi.number().min(2025).required()
+        end_date: Joi.number().min(2026).required()
     });
 
     const { error } = schema.validate(req.body);

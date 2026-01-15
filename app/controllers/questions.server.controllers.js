@@ -17,7 +17,9 @@ const askQuestion = (req, res) => {
     })
 
     const { error } = schema.validate(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
+    if(error) {
+        return res.status(400).json({ error_message: error.details[0].message});
+    };
 
     const item_id = req.params.id;
     const user_id = req.user_id;
@@ -35,7 +37,9 @@ const answerQuestion = (req, res) => {
     })
 
     const { error } = schema.validate(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
+    if(error) {
+        return res.status(400).json({ error_message: error.details[0].message});
+    };
 
     const question_id = req.params.question_id;
 

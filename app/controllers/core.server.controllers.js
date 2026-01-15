@@ -12,12 +12,14 @@ const createItem = (req, res) => {
     const schema = Joi.object({
         name: Joi.string().required(),
         description: Joi.string().required(),
-        starting_bid: Joi.number().required(),
+        starting_bid: Joi.number().positive.required(),
         end_date: Joi.number().min(2025).required()
     });
 
     const { error } = schema.validate(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
+    if(error) {
+        return res.status(400).json({ error_message: error.details[0].message});
+    };
 
     const creator_id = req.user_id; //middleware
 
@@ -46,7 +48,9 @@ const bidItem = (req, res) => {
     })
 
     const { error } = schema.validate(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
+    if(error) {
+        return res.status(400).json({ error_message: error.details[0].message});
+    };
 
     const item_id = req.params.id;
     const user_id = req.params.id;

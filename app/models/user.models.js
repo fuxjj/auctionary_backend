@@ -25,7 +25,12 @@ exports.addNewUser = (user, done) => {
         VALUES (?, ?, ?, ?, ?)`,
         [user.first_name, user.last_name, user.email, hash, salt],
         function (err) {
-            if(err) return done(err);
+            if(err) {
+                if(err.code === "SQLITE_CONSTRAINT") { //dont allow duplicate emails
+                    return done({ type: "DUPLICATE_EMAIL" });
+                }
+                return done(err);
+            }
             done(null, this.lastID)
         }
     );
@@ -78,6 +83,9 @@ exports.removeToken = (token, done) => {
     db.run(
         `UPDATE users SET session_token = NULL WHERE session_token = ?`,
         [token],
-        (err) => done(err)
+        function (err) {
+            if(err) return done(err);
+            done(null, this.changes); //return anything that wasupdated
+        }
     )
 }
